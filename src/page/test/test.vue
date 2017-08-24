@@ -8,7 +8,12 @@
                 <input type="text" placeholder="客户号码" v-model.lazy="called">
             </section>
             <section class="input_container">
-                <input type="text" placeholder="显示号码"  readonly v-model="caller">
+                 <label for="caller">主叫号码</label>
+                 <select id="caller" v-model="caller">
+                    <option disabled value="">请选择</option>
+                    <option value="17760787621">17760787621(郑州)</option>
+                    <option value="13530859406">13530859406(深圳)</option>
+                </select>
             </section>
             <section class="input_container captcha_code_container">
                 <input type="text" placeholder="验证码" maxlength="4" v-model="codeNumber">
@@ -51,7 +56,7 @@
         created(){
             this.getCaptchaCode();
             //先写死主叫号码
-            this.caller="17760787621";
+            //this.caller="17760787621";
             this.fileName="1";
             this.pathParam="00,00,:385";
         },
@@ -79,7 +84,7 @@
                     return
                 }else if(!this.caller){
                     this.showAlert = true;
-                    this.alertText = '主叫号码';
+                    this.alertText = '请选择主叫号码';
                     return
                 }else if(!this.codeNumber){
                     this.showAlert = true;
@@ -96,6 +101,7 @@
                     this.alertText = res.errMessage;
                 }
                 this.showAlert = true;
+                await this.getCaptchaCode();
             },
             closeTip(){
                 this.showAlert = false;
@@ -124,6 +130,9 @@
             justify-content: space-between;
             padding: .6rem .8rem;
             border-bottom: 1px solid #f1f1f1;
+            label{
+               @include sc(.7rem, #666); 
+            }
             input{
                 @include sc(.7rem, #666);
             }
